@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.Entity.User;
+import com.example.demo.Repository.UserMapper;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserSearchRequest;
 import com.example.demo.dto.UserUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ public class UserService {
 	 * ユーザー情報 Repository
 	 */
 	private final UserRepository userRepository;
+	private final UserMapper userMapper;
 
 	public List<User> searchAll() {
 		;
@@ -59,6 +62,12 @@ public class UserService {
 		user.setPhone(userUpdateRequest.getPhone());
 		user.setUpdateDate(new Date());
 		userRepository.save(user);
+
+	}
+
+	public User search(UserSearchRequest userSearchRequest) {
+
+		return userMapper.search(userSearchRequest);
 
 	}
 

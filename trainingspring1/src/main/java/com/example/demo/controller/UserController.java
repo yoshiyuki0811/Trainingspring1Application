@@ -153,4 +153,12 @@ public class UserController {
 		return "user/search";
 	}
 
+	@PostMapping("user/id_search")
+	public String search(@ModelAttribute UserSearchRequest userSearchRequest, Model model) {
+		User user = userService.search(userSearchRequest);
+		model.addAttribute("userinfo", user);
+		return "user/search";
+
+	}
+
 }
