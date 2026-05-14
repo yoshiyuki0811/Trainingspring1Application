@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.Entity.User;
 import com.example.demo.Service.UserService;
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserSearchRequest;
 import com.example.demo.dto.UserUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
@@ -139,6 +140,17 @@ public class UserController {
 		userService.create(userRequest);
 		return "redirect:/user/list";
 
+	}
+
+	/**
+	 * ユーザー情報検索画面を表示
+	 * @param model
+	 * @return　ユーザー情報一覧画面
+	 */
+	@GetMapping("user/search")
+	public String displaySearch(Model model) {
+		model.addAttribute("userSearchRequest", new UserSearchRequest());
+		return "user/search";
 	}
 
 }
