@@ -32,7 +32,7 @@ public class UserService {
 
 		Date now = new Date();
 		User user = new User();
-		user.setName(user.getName());
+		user.setName(userRequest.getName());
 		user.setAddress(userRequest.getAddress());
 		user.setPhone(userRequest.getPhone());
 		user.setCreateDate(now);
