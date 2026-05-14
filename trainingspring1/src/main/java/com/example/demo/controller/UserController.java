@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.Entity.User;
 import com.example.demo.Service.UserService;
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,6 +67,51 @@ public class UserController {
 		model.addAttribute("userData", user);
 
 		return "user/view";
+	}
+
+	/**
+	 * ユーザー編集画面を表示
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/user/{id}/edit")
+	public String displayEdit(@PathVariable Long id, Model model) {
+		User user = userService.findById(id);
+		UserUpdateRequest userUpdateRequest = new UserUpdateRequest();
+		userUpdateRequest.setId(user.getId());
+		userUpdateRequest.setName(user.getName());
+		userUpdateRequest.setAddress(user.getAddress());
+		userUpdateRequest.setPhone(user.getPhone());
+
+		model.addAttribute("userUpdateRequest", userUpdateRequest);
+		return "user/edit";
+
+	}
+
+	/**
+	 * ユーザー更新
+	 * @param userRequest リクエストデータ
+	 * @param model Model
+	 * @return ユーザー情報詳細画面
+	 */
+	@PostMapping("/user/update")
+	public String update(@Validated @ModelAttribute UserUpdateRequest userUpdateRequest, BindingResult result,
+			Model model) {
+
+		if (result.hasErrors()) {
+			List<String> errorList = new ArrayList<String>();
+
+			for (ObjectError error : result.getAllErrors()) {
+				errorList.add(error.getDefaultMessage());
+			}
+			model.addAttribute("validationError", errorList);
+			return "user/edit";
+		}
+
+		// ユーザー情報の更新
+		userService.update(userUpdateRequest);
+		return String.format("redirect:/user/%d", userUpdateRequest.getId());
 	}
 
 	/**

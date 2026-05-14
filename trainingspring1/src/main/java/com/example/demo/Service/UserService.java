@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.Entity.User;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.dto.UserRequest;
+import com.example.demo.dto.UserUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +29,10 @@ public class UserService {
 
 	}
 
+	/**
+	 * ユーザー情報の更新
+	 * @param userRequest
+	 */
 	public void create(UserRequest userRequest) {
 
 		Date now = new Date();
@@ -43,6 +48,17 @@ public class UserService {
 
 	public User findById(Long id) {
 		return userRepository.findById(id).get();
+
+	}
+
+	public void update(UserUpdateRequest userUpdateRequest) {
+
+		User user = findById(userUpdateRequest.getId());
+		user.setAddress(userUpdateRequest.getAddress());
+		user.setName(userUpdateRequest.getName());
+		user.setPhone(userUpdateRequest.getPhone());
+		user.setUpdateDate(new Date());
+		userRepository.save(user);
 
 	}
 
